@@ -6,6 +6,7 @@ from functools import reduce
 from django.core.serializers import serialize
 from django.utils.safestring import mark_safe
 from django.template import Library
+from django.http import HttpResponse
 
 register = Library()
 
@@ -14,6 +15,8 @@ register = Library()
 def home(request):
     return render(request, 'home.html', {}) #Looks for html files inside app_kudisavers/templates
 
+def awshome(request):
+    return HttpResponse("Hello from django, try out <a href='/admin/'>/admin/</a>\n")
 
 def section(request):
     return render(request, 'section.html', {})
