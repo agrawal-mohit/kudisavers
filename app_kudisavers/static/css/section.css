@@ -1,0 +1,58 @@
+.list-group-item img{
+	max-height : 100%;
+	max-width : 10%;
+	margin-right : 5%;
+}
+
+.section-container{
+position : absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.section-left{
+		height: 100%;
+		
+}
+
+.section-right{
+		height: 100%;
+			
+}
+
+.popular-price-list-panel{
+	position : relative;
+	top : 20px;
+}
+
+.category-heading{
+	border-bottom : 2px solid black;
+}
+
+.items{
+	white-space: nowrap;
+	width : 100%;
+	margin-top : 3%;
+	margin-bottom : 2%;
+	padding-left : 2%;
+}
+
+
+.sectionitem{
+	display: inline-block;
+	width : 20%;
+	text-align: center;
+
+	
+}
+
+.sectionitem a p{
+color: #333333;
+	font-weight: bold;
+}
+
+.sectionitem a:hover {
+	 text-decoration: none;
+}
+
+

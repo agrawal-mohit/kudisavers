@@ -18,6 +18,7 @@ VPCId=
 Application Healthcheck URL=
 
 [aws:elasticbeanstalk:application:environment]
+DJANGO_SETTINGS_MODULE=project_kudisavers.settings
 PARAM1=
 PARAM2=
 PARAM3=
@@ -28,7 +29,7 @@ PARAM5=
 NumProcesses=1
 NumThreads=15
 StaticFiles=/static/=static/
-WSGIPath=application.py
+WSGIPath=project_kudisavers/wsgi.py
 
 [aws:elasticbeanstalk:container:python:staticfiles]
 /static/=static/

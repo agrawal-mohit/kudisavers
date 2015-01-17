@@ -1,5 +1,6 @@
 [global]
 ApplicationName=Kudisavers
+ApplicationVersionName=git-f88238225fb323fa4bb5eec0b287c3ab64e9ac78-1421415169444
 AwsCredentialFile=C:\Users\mohit.agrawal1\.elasticbeanstalk\aws_credential_file
 DevToolsEndpoint=git.elasticbeanstalk.ap-southeast-1.amazonaws.com
 EnvironmentName=Kudisavers-develop-env

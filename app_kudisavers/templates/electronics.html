@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load staticfiles %}
+
+<link rel="stylesheet" href="{% static 'css/section.css' %}">
+
+        <script>
+            kudisavers.controller('section-electronics', function($scope){
+
+                $scope.popular_price_list_groups = {'Popular Media Players': [{'name': 'Sony Home Theaters Price', 'img': 'http://homeimg2.mspcdn.net/sony_30.png'}, {'name': 'Philips Home Theaters Price', 'img': 'http://homeimg2.mspcdn.net/philips_30.png'}, {'name': 'Philips DVD Players Price', 'img': 'http://homeimg2.mspcdn.net/philips_30.png'}, {'name': 'Sony DVD Players Price', 'img': 'http://homeimg2.mspcdn.net/sony_30.png'}], 'Popular TVs': [{'name': 'Sony TV Price List', 'img': 'http://homeimg2.mspcdn.net/sony_30.png'}, {'name': 'LG LED TV Price List', 'img': 'http://homeimg2.mspcdn.net/lg_30.png'}, {'name': 'Toshiba LED TV Price List', 'img': 'http://homeimg2.mspcdn.net/toshiba_30.png'}, {'name': 'Panasonic LED TV Price List', 'img': 'http://homeimg2.mspcdn.net/panasonic_30.jpg'}, {'name': 'Philips LED TV Price List', 'img': 'http://homeimg2.mspcdn.net/philips_30.png'}]};
+
+                $scope.section_groups = {'LCD & LED TVs': [{'item': 'All LED & LCD TVs', 'img': 'http://homeimg1.mspcdn.net/tv_100.jpeg'}, {'item': 'Samsung LED TV', 'img': 'http://homeimg1.mspcdn.net/samsung_100.jpg'}, {'item': 'Sony LED TV', 'img': 'http://homeimg1.mspcdn.net/sony_100.png'}, {'item': 'LG LED TV', 'img': 'http://homeimg1.mspcdn.net/lg_100.png'}, {'item': 'Toshiba LED TV', 'img': 'http://homeimg1.mspcdn.net/toshiba_100.png'}], 'iPods, Home Theaters & DVD Players': [{'item': 'Apple iPod', 'img': 'http://homeimg1.mspcdn.net/apple_100.png'}, {'item': 'MP3 Players', 'img': 'http://homeimg1.mspcdn.net/mp3player_100.jpeg'}, {'item': 'Home Theaters', 'img': 'http://homeimg1.mspcdn.net/hometheater_100.jpeg'}, {'item': 'Video & DVD Players', 'img': 'http://homeimg1.mspcdn.net/videoplayer_100.jpeg'}, {'item': 'Projectors', 'img': 'http://eca7be04b147deacfa4c-82cf6157a8169c9e50dc1c35c1fca86b.r11.cf1.rackcdn.com/projectors.png'}, {'item': 'Smart TV Boxes', 'img': 'http://eca7be04b147deacfa4c-82cf6157a8169c9e50dc1c35c1fca86b.r11.cf1.rackcdn.com/smart_tv_boxes.png'}], 'Headphones & Memory Cards': [{'item': 'Headphones', 'img': 'http://homeimg1.mspcdn.net/earphones_100.jpeg'}, {'item': 'Headsets', 'img': 'http://homeimg1.mspcdn.net/wiredheadsets_100.jpeg'}, {'item': 'Bluetooth Headsets', 'img': 'http://homeimg1.mspcdn.net/bluetooth_100.jpeg'}, {'item': 'MicroSD Memory Cards', 'img': 'http://homeimg1.mspcdn.net/microsd_100.jpeg'}, {'item': 'SD Memory Cards', 'img': 'http://homeimg1.mspcdn.net/sdmemorycard_100.jpeg'}], 'Gaming & Accessories': [{'item': 'Gaming Consoles', 'img': 'http://4befd2b75084217bdb89-0db8ef8f76dda1bacd72a54e7571190e.r6.cf1.rackcdn.com/gaming-console.png'}]};
+
+
+
+            })
+
+        </script>
+
+<div class="section-container" ng-controller="section-electronics">
+
+<div class="section-left col-md-3">
+    <div class="popular-price-list-panel">
+        <div class="list-group" ng-repeat="(groupName,listGroup) in popular_price_list_groups">
+            <a href="#" class="list-group-item disabled">{[{ groupName }]}</a>
+            <a href="#" class="list-group-item" ng-repeat="pplist in listGroup">
+                <img src="{[{pplist.img}]}" alt="{[{pplist.name}]}">
+                {[{ pplist.name }]}
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="section-right col-md-9">
+    <div class="section-items-panel">
+        <div class="section-group" ng-repeat="(sgName,sg) in section_groups"> <!-- msp_index div open -->
+				<div class="section-group-heading">
+					<h3>{[{sgName}]}</h3>
+				</div>
+				<div class="section-items">
+					<div class="sectionitem" ng-repeat="si in sg">
+						<a href="/mobiles/{[{sgName.split(' ').join('-')}]}/{[{si.item.split(' ').join('-')}]}" ><img src="{[{si.img}]}" alt="{[{si.item}]} Price "></a><br>
+						<a href="/mobiles/{[{sgName.split(' ').join('-')}]}/{[{si.item.split(' ').join('-')}]}" >
+							<p>{[{si.item}]}</p>
+                        </a>
+					</div>
+				</div>
+	    </div>
+    </div> <!--section-items-panel-->
+
+</div>><!--section-right-->
+
+</div><!--section-container-->
+
+{% endblock content %}

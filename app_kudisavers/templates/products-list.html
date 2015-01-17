@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+{% load staticfiles%}
+
+<script src="{% static 'lib/bootstrap/js/ui-bootstrap-tpls.js' %}"></script>
+<script src="{% static 'js/services/ng-infinite-scroll.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'css/products-list.css' %}">
+
+
+<style>
+
+
+.currency {
+    display: inline;
+    margin-right: 4px;
+}
+
+#start{
+    width : 50px;
+ }
+
+#end{
+    width: 80px;
+}
+</style>
+        <script>
+
+
+
+            kudisavers.controller('products-list', function($scope){
+
+                $scope.productsData = ({{products}});
+                $scope.products = [];
+                $scope.prices= [];
+                $.each($scope.productsData, function(i,dataObj){
+                    $scope.products.push(dataObj.fields);
+                    $scope.prices.push(dataObj.fields.price);
+                });
+                console.log($scope.products);
+                $scope.totalItems = $scope.products.length;
+                $scope.itemsPerPage = 20
+                $scope.currentPage = 1;
+
+                $scope.pageCount = function () {
+                    return Math.ceil($scope.totalItems / $scope.itemsPerPage);
+                };
+
+                $scope.$watch('currentPage + itemsPerPage', function() {
+                    var begin = (($scope.currentPage - 1) * $scope.itemsPerPage),
+                    end = begin + $scope.itemsPerPage;
+                    $scope.pagedProducts = $scope.products.slice(begin, end);
+                });
+
+                $(function() {
+                    $scope.start = Math.min.apply(Math, $scope.prices);
+                     $scope.end = Math.max.apply(Math, $scope.prices);
+
+                    $( "#slider-range").slider({
+                      range: true,
+                      min: $scope.start,
+                      max: $scope.end ,
+                      values: [ $scope.start, $scope.end ],
+                      slide: function( event, ui ) {
+                          $scope.$apply(function(){
+                              $scope.start = ui.values[ 0 ];
+                              $scope.end = ui.values[ 1 ];
+                          }) ;
+                      }
+                    });
+                     $( "#start" ).val( $( "#slider-range" ).slider( "values", 0 ) );
+                     $( "#end" ).val( $( "#slider-range" ).slider( "values", 1 ) );
+                });
+
+                  $scope.filterProducts = function(products){
+
+                    min = $scope.start || 0;
+                    max = $scope.end || Infinity;
+                    console.log(min,max)
+                    if(products.price > min && products.price < max )
+                        return true;
+                    else
+                        return false;
+                }
+
+
+            })
+
+        </script>
+
+<div class="products-main-container col-md-11 center-block" ng-controller="products-list">
+
+    <div class="breadcrumbs col-md-12">
+
+
+    </div>
+
+    <div class="options-bar">
+        <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage"
+              ng-change="pageChanged()" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;"
+              first-text="&laquo;" last-text="&raquo;">
+        </pagination>
+
+    </div>
+
+    <div class="products-filter-container col-md-2">
+
+        <div class="price-selector">
+            <div class="price-range">
+                 <a style="float:right;cursor:pointer;">Clear</a><label><b>PRICE</b></label><br>
+                <p class="currency"><b>&#x20A6;</b></p><input class="amount" ng-model="start" type="text" id="start" /> - <p class="currency"><b>&#x20A6;</b></p><input class="amount" ng-model="end" type="text" id="end" />
+            </div><br>
+            <div id="slider-range"></div>
+        </div>
+
+    </div>
+
+    <div class="products-list-container col-md-10">
+
+        <div class="products-list-item col-md-3" ng-repeat="product in pagedProducts  | orderBy : 'discount' : descending | filter : filterProducts ">
+            <!--<a href="#" class="stl save-item topLeft btn callout-target btn-s btn-red" data-callout="Save to list">Save</a>-->
+            <a href="#" class="product-image">
+                <img class="item-image" src="{[{ product.imageLink }]}">
+            </a>
+            <div class="item-details">
+                <a href="#" class="item-title">{[{ product.prodName }]}</a>
+                <div class="main-details">
+                    <span class="item-price">
+                        <span class="price-val"> &#x20A6; {[{ product.price }]}</span>
+                    </span>
+                    <div class="rating">
+                        <div class="rating-wrap">
+                            <div class="star-rating">
+                                <div class="rating-input callout-target" data-callout="Rated 3.9 out of 5 stars"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="store-count"></div>
+                </div>
+                <ul class="item-info-list">
+                    <!--<li class="info-item" ng-repeat="(key,property) in product.fields.prodProperties">{[{ property }]}</li>-->
+                </ul>
+            </div>
+        </div>
+        <div class="options-bar">
+        <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage"
+              ng-change="pageChanged()" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;"
+              first-text="&laquo;" last-text="&raquo;">
+        </pagination>
+
+    </div>
+
+    </div>
+
+
+</div><!--section-container-->
+
+{% endblock content %}
