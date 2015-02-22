@@ -4,11 +4,19 @@ from django.utils import timezone
 
 
 import os
+<<<<<<< HEAD
 
+=======
+#from mptt.models import MPTTModel, TreeForeignKey
+>>>>>>> develop
 from django.utils import timezone
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 import urllib3
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
 from django.core.files.base import ContentFile
 
 class Product(models.Model):
@@ -41,7 +49,11 @@ class Product(models.Model):
             f= open('imageLink.txt','wb')
             f.write(bytes(str(self.imageLink), 'UTF-8'))
             f.close()
+<<<<<<< HEAD
             req = urllib3.urlopen(self.imageLink, headers={'User-Agent': 'Mozilla/5.0'})
+=======
+            req = urllib3.request.urlopen(self.imageLink, headers={'User-Agent': 'Mozilla/5.0'})
+>>>>>>> develop
             result = urllib3.urlopen(req)
             self.image.save(os.path.basename(self.imageLink),ContentFile(result.read()))
             print ("Image saved")
