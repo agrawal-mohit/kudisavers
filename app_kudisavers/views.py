@@ -7,7 +7,7 @@ from django.core.serializers import serialize
 from django.utils.safestring import mark_safe
 from django.template import Library
 from django.http import HttpResponse
-
+import re
 register = Library()
 
 # Create your views here.
@@ -77,3 +77,10 @@ def cameras_item(request, prodType, prodDesc):
     products = Product.objects.filter(prodTypeQuery).filter(prodDescQuery)
 
     return render(request, 'products-list.html', {'products' : products })
+
+def mobiles_item_pricelist(request, category, prodType, prodName):
+    print(category)
+    print(prodType)
+    print(prodName)
+    #print(re.sub("[!@#$%^&*()[]\{\};:,./<>?\|`~-=_+]", "", prodName))
+    return render(request, 'price-list.html', {'productname' : prodName })
