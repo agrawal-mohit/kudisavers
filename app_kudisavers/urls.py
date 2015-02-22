@@ -22,6 +22,8 @@ urlpatterns = patterns('',
     url(r'^homedecor/$', views.homedecor),
 
     url(r'^mobiles/(?P<category>[a-zA-Z-]+)/(?P<prodType>[a-zA-Z-]+)$', views.mobiles_item),
-    url(r'^cameras/(?P<category>[a-zA-Z-]+)/(?P<prodType>[a-zA-Z-]+)$', views.cameras_item)
+    url(r'^cameras/(?P<category>[a-zA-Z-]+)/(?P<prodType>[a-zA-Z-]+)$', views.cameras_item),
+
+     url(r'^mobiles/(?P<category>[a-zA-Z-]+)/(?P<prodType>[a-zA-Z-]+)/(?P<prodName>.*)$', views.mobiles_item_pricelist),
 
 )

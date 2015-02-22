@@ -31,8 +31,9 @@
 
 
 
-            kudisavers.controller('products-list', function($scope){
+            kudisavers.controller('products-list', function($rootScope, $scope){
 
+                $scope.routes = $rootScope.routes;
                 $scope.productsData = ({{products}});
                 $scope.products = [];
                 $scope.prices= [];
@@ -126,7 +127,7 @@
                 <img class="item-image" src="{[{ product.imageLink }]}">
             </a>
             <div class="item-details">
-                <a href="#" class="item-title">{[{ product.prodName }]}</a>
+                <a href="{[{ '/' + routes.join('/') + '/' + product.prodName }]}" class="item-title">{[{ product.prodName }]}</a>
                 <div class="main-details">
                     <span class="item-price">
                         <span class="price-val"> &#x20A6; {[{ product.price }]}</span>
