@@ -7,8 +7,15 @@ from django.core.serializers import serialize
 from django.utils.safestring import mark_safe
 from django.template import Library
 from django.http import HttpResponse
-import re
+from operator import itemgetter
+from django.db.models import Avg, Max, Min
+from django.forms.models import model_to_dict
+from django.core import serializers
+
+import re, json
 register = Library()
+
+
 
 # Create your views here.
 
@@ -79,8 +86,77 @@ def cameras_item(request, prodType, prodDesc):
     return render(request, 'products-list.html', {'products' : products })
 
 def mobiles_item_pricelist(request, category, prodType, prodName):
-    print(category)
-    print(prodType)
-    print(prodName)
-    #print(re.sub("[!@#$%^&*()[]\{\};:,./<>?\|`~-=_+]", "", prodName))
-    return render(request, 'price-list.html', {'productname' : prodName })
+    sites = ['kara', 'kaymu', 'jumia', 'regalbuyer' ]
+    print('Action - mobiles_item_pricelist:')
+    section_Q = Q(section__icontains= 'mobiles')
+    category_Q = Q(category__icontains= category)
+    prodType_Q =  Q(prodType__icontains= prodType)
+
+    type_products = Product.objects.filter(section_Q).filter(category_Q).filter(prodType_Q)
+
+    translation_table = dict.fromkeys(map(ord, '|_-!@#$'), None)
+    #WIN - words in name
+    win_list = prodName.translate(translation_table).split( )
+
+    win_data = []
+    for word in win_list:
+        #print('Word : ', word )
+        win_data.append({'word' : word , 'matches': len(list(type_products.filter(prodName__icontains= word)))})
+    sorted_win_data = sorted(win_data, key=operator.itemgetter('matches'), reverse=True)
+    print(sorted_win_data)
+
+    '''
+    match_list = []
+    for win in sorted_win_data:
+        print(win.get('word'))
+        match_list.append(win.get('word'))
+        print(match_list)
+        match_Q = reduce(operator.and_, (Q(prodName__icontains = x) for x in match_list))
+        matched_products = type_products.filter(match_Q)
+        print(match_list, len(list(matched_products)))
+        all_present = 1;
+        for site in sites:
+            print(site , len(list(matched_products.filter(Q(site__icontains= site)))))
+            all_present = all_present*(len(list(matched_products.filter(Q(site__icontains= site)))))
+        if (all_present==0):
+            match_list.pop()
+            break
+    '''
+
+    site_best_products = []
+    site_Queries = {}
+    for site in sites:
+        match_list = []
+        for win in sorted_win_data:
+            match_list.append(win.get('word'))
+            #print(match_list)
+            match_Q = reduce(operator.and_, (Q(prodName__icontains = x) for x in match_list))
+            matched_products = type_products.filter(Q(site__icontains = site)).filter(match_Q)
+            if(len(list(matched_products))== 0 or len(match_list)==len(sorted_win_data)):
+                match_list.pop()
+                match_Q = reduce(operator.and_, (Q(prodName__icontains = x) for x in match_list))
+                site_best_match =  type_products.filter(Q(site__icontains = site)).filter(match_Q).order_by("-price")[0]
+                print(site, ':', match_list, len(list(type_products.filter(Q(site__icontains = site)).filter(match_Q))), site_best_match)
+                site_best_products.append(site_best_match)
+                break
+
+    print(site_best_products)
+
+    '''
+    final_match_Q = reduce(operator.and_, (Q(prodName__icontains = x) for x in match_list))
+    matched_products = type_products.filter(final_match_Q)
+
+    site_best_products = []
+
+    for site in sites:
+        this_site_product = matched_products.filter( Q(site__icontains= site)).order_by("-price")[0]
+        print(site, ':' , this_site_product)
+        site_best_products.append(this_site_product)
+
+
+
+    #return_data =  mark_safe(serialize('json',{'matched_products' : matched_products , 'site_best_products' : site_best_products}))
+    #x =  {'site_best_product' : json.dumps(site_best_product )}
+    '''
+
+    return render(request, 'price-list.html', {'site_best_products' : mark_safe(serialize('json', site_best_products))})

@@ -7,11 +7,55 @@
 <script src="{% static 'lib/bootstrap/js/ui-bootstrap-tpls.js' %}"></script>
 <script src="{% static 'js/services/ng-infinite-scroll.js' %}"></script>
 
+<style>
+    .pl-top-section{
+        background-color : red;
+        height:50%;
+        float: center;
+        display : inline-block;
+    }
+
+   .pl-prod-img{
+        background-color : blue;
+        display : inline-block;
+        height:100%;
+    }
+
+    .pl-prod-details{
+        display : inline-block;
+        background-color : green;
+        height:100%;
+    }
+
+</style>
+
 <script>
 
-    console.log("here");
-    //console.log(({{productname}}))
+        kudisavers.controller('priceListCtrl', function($rootScope, $scope){
+            console.log("Dsf")
+            $scope.eachSiteProds = ({{site_best_products}})
+
+            $scope.bestProduct = Math.min.apply(Math,$scope.eachSiteProds.map(function(o){return o.fields.price;}))
+            console.log("dfdsf")
+            console.log($scope.bestProduct)
+        })
+        console.log(({{site_best_products}}))
 </script>
 
 
+<div ng-contoller="priceListCtrl">
+
+    <div class="pl-top-section col-md-9">
+        <div class="pl-prod-img col-md-3">
+            <a href="#" class="pl-product-image">
+                <img class="pl-item-image" src="">
+            </a>
+        </div>
+        <div class="pl-prod-details col-md-9">
+
+        </div>
+
+    </div>
+
+</div>
 {% endblock content %}

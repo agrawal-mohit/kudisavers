@@ -17,15 +17,16 @@ with open('mobiles-data.json') as f:
 			data_str[str(datum['category'])] = dict()
 		if(type(datum['price'] is str)):
 			datum['price'] =  float(str(datum['price']).replace(",", "")) or 0.00
-			data.append({"model" : "app_kudisavers.product", "pk" : n ,"fields" : datum})
+			
+		data.append({"model" : "app_kudisavers.product", "pk" : n ,"fields" : datum})
 		
 
 f.close()
-#file = open('mobiles-fixture.json', 'wb')
-#file.write(json.dumps(data, indent=4))
-#file.close()
+file = open('mobiles-fixture.json', 'wb')
+file.write(json.dumps(data, indent=4))
+file.close()
 
 
-str_file = open('mobiles-str.json', 'wb')
-str_file.write(json.dumps(data_str, indent=4))
-str_file.close()
+#str_file = open('mobiles-str.json', 'wb')
+#str_file.write(json.dumps(data_str, indent=4))
+#str_file.close()

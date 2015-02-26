@@ -31,7 +31,7 @@
 
 
 
-            kudisavers.controller('products-list', function($rootScope, $scope){
+            kudisavers.controller('productsListCtrl', function($rootScope, $scope){
 
                 $scope.routes = $rootScope.routes;
                 $scope.productsData = ({{products}});
@@ -92,20 +92,16 @@
 
         </script>
 
-<div class="products-main-container col-md-11 center-block" ng-controller="products-list">
+<div class="products-main-container col-md-11 center-block" ng-controller="productsListCtrl">
 
-    <div class="breadcrumbs col-md-12">
-
-
-    </div>
-
+<!--
     <div class="options-bar">
         <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage"
               ng-change="pageChanged()" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;"
               first-text="&laquo;" last-text="&raquo;">
         </pagination>
 
-    </div>
+    </div>-->
 
     <div class="products-filter-container col-md-2">
 
@@ -123,7 +119,7 @@
 
         <div class="products-list-item col-md-3" ng-repeat="product in pagedProducts  | orderBy : 'discount' : descending | filter : filterProducts ">
             <!--<a href="#" class="stl save-item topLeft btn callout-target btn-s btn-red" data-callout="Save to list">Save</a>-->
-            <a href="#" class="product-image">
+            <a href="{[{ '/' + routes.join('/') + '/' + product.prodName }]}" class="product-image">
                 <img class="item-image" src="{[{ product.imageLink }]}">
             </a>
             <div class="item-details">
@@ -157,6 +153,6 @@
     </div>
 
 
-</div><!--section-container-->
+</div><!--products-main-container-->
 
 {% endblock content %}
