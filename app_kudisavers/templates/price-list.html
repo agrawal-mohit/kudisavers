@@ -7,11 +7,285 @@
 <script src="{% static 'lib/bootstrap/js/ui-bootstrap-tpls.js' %}"></script>
 <script src="{% static 'js/services/ng-infinite-scroll.js' %}"></script>
 
-<script>
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'css/products-list.css' %}">
 
-    console.log("here");
-    //console.log(({{productname}}))
-</script>
 
+<style>
+
+.pl-top-section{
+        padding-left : 5%;
+        height:50%;
+        float: center;
+        display : inline-block;
+    }
+
+   .pl-prod-img{
+
+        display : inline-block;
+        height:100%;
+    }
+
+    .pl-prod-details{
+        display : inline-block;
+        height:100%;
+    }
+
+    .pl-item-image{
+        width : 100%;
+        height : auto;
+
+    }
+
+    .best-price-bar> *{
+        display : inline-block;
+    }
+
+    .best-price-tag{
+        color : #c00;
+    }
+
+    .btn-buy-now, .btn-price-drop{
+        margin-left:3%;
+    }
+
+
+    .badge_text{
+        position: relative;
+        top: 10px;
+    }
+
+     &.danger {
+        .gradientBar(#ee5f5b, #c43c35);
+      }
+
+
+
+    /* Tab Navigation */
+    .nav-tabs {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    .nav-tabs > li > a {
+        background: #DADADA;
+        border-radius: 0;
+
+    }
+
+    .nav-tabs > li > a:hover {
+        border-top: 3px solid #c00;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,.4);
+    }
+
+     .nav-tabs > li > a:active {
+        border-top: 3px solid #c00;
+
+    }
+
+    /* Tab Content */
+    .tab-pane {
+        box-shadow: 0 0 4px rgba(0,0,0,.4);
+        border-radius: 0;
+        padding: 10px;
+    }
+
+    .pl-nav-section{
+        padding-left : 5%;
+    }
+
+    .nav-tabs > li > a > *{
+        display : inline-block;
+        margin : auto;
+    }
+
+     .nav-tabs > li > a > img{
+        max-width: 16px;
+        max-height:16px;
+    }
+
+    .price-table{
+        width:100%;
+        margin-top : 3%;
+    }
+    .site-price-bar{
+        border-bottom : 1px solid grey;
+        width:100%;
+    }
+
+    .site-price-bar > td{
+        min-height: 150px;
+        width: 20%;
+         border : 1px solid grey;
+    }
+
+    .site-logo{
+    }
+    .site-price{
+        color : #c00;
+    }
+    .site-review{
+    }
+    .site-specs{
+    }
+    .site-redirect{
+    }
+    .site-redirect>button>a{
+        color: white;
+    }
+    .site-redirect>button> a:hover{
+        text-decoration: none;
+    }
+
+
+</style>
+        <script>
+
+            $('ul.nav-tabs li a').onclick = function(e){
+                console.log('dsfsdf');
+               $(e.target).addClass('active');
+               console.log($(e.target).innerHTML());
+               $(this).find('*').removeClass('active');
+            }
+
+            kudisavers.controller('priceListCtrl', function($rootScope, $scope){
+                $scope.routes = $rootScope.routes;
+                $scope.selProd = decodeURIComponent($scope.routes[$scope.routes.length-1]);
+                $scope.eachSiteProds = ({{site_best_products}})
+                console.log($scope.eachSiteProds)
+                minPrice = Math.min.apply(Math,$scope.eachSiteProds.map(function(o){return o.fields.price;}))
+                console.log(minPrice);
+                $scope.bestProduct = ($.map($scope.eachSiteProds, function(o){
+                    if(o.fields.price==minPrice) {
+                        return o.fields;
+                    }
+                }))[0]
+
+                console.log($scope.bestProduct)
+
+
+            })
+
+        </script>
+
+<div ng-controller="priceListCtrl">
+
+    <div class="pl-top-section col-md-10">
+        <div class="pl-prod-img col-md-3">
+            <a href="#" class="pl-product-image">
+                <img class="pl-item-image" src="{[{bestProduct.imageLink}]}">
+            </a>
+        </div>
+        <div class="pl-prod-details col-md-9">
+            <h3>{[{bestProduct.prodName}]}</h3>
+            <div class="review-bar">
+                <div class="rating">X Ratings</div>
+                  <a>X Reviews</a>
+                | <a>Write a review and win</a>
+                | <a>Compare</a>
+            </div>
+            <div class="best-price-bar">
+                <h4>Best Price : </h4>
+                <h3 class="best-price-tag">&#x20A6; {[{bestProduct.price}]}</h3>
+                <img style="margin-left:3%" src="{% static 'images/guarantee-badge.png' %}" />
+                <span class="badge_text">Lowest<br>Price</span>
+                <button type="button" class="btn btn-danger btn-buy-now">BUY NOW</button>
+                <button type="button" class="btn btn-success btn-price-drop" callout="Get price drop alert">PRICE DROP ALERT</button>
+            </div>
+            <div style="min-height:150px">
+                <ul style="list-style-type: none;padding-left: 1%;">
+                    <li ng-repeat="attr in [1,2,3,4,5]"><img src="{% static 'images/gray-arrow.gif' %}"/></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <!-- Navigation pane -->
+    <div class="pl-nav-section col-md-10">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="active">
+              <a href="#prices" role="tab" data-toggle="tab">
+                  <h4 style="color:black;">&#x20A6;</h4> Online Stores Prices
+              </a>
+          </li>
+          <li>
+              <a href="#specs" role="tab" data-toggle="tab">
+                 <img src="{% static 'images/tecspec.png' %}"/> Specifications
+              </a>
+          </li>
+          <li>
+              <a href="#products" role="tab" data-toggle="tab">
+                  <img src="{% static 'images/scale.png' %}"/> Similar Products
+              </a>
+          </li>
+          <li>
+              <a href="#reviews" role="tab" data-toggle="tab">
+                  <img src="{% static 'images/reviews.png' %}"/> Reviews
+              </a>
+          </li>
+          <li>
+            <a href="#history" role="tab" data-toggle="tab">
+              <img src="{% static 'images/pricehistory.png' %}"/> Price History
+            </a>
+          </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane active in" id="prices">
+            <div style="border : 1px 0 1px 0 rgba(0,0,0,0.8)">
+                <p><b>{[{selProd}]}</b> Price in Nigeria</p>
+            </div>
+            Filter By:
+            <input type="checkbox"> COD
+            <input type="checkbox"> EMI
+            <input type="checkbox"> Return Policy
+            <input type="checkbox"> Offers
+            <input type="checkbox"> Coupons
+            <div style="display:inline-block;float:right;">
+                Sort By:
+                <select>
+                  <option>Relevance</option>
+                  <option>Price : Low to High</option>
+                  <option>Price : High to Low</option>
+                  <option>Store Rating</option>
+                </select>
+            </div>
+            <div>
+                <table class="price-table">
+                    <tr class="site-price-bar" ng-repeat="thisSiteProd in eachSiteProds | orderBy : 'fields.price'">
+                        <td class="site-logo"><img src="/static/images/{[{thisSiteProd.fields.site}]}.png"/></td>
+                        <td style="text-align:center;" class="site-price"><h3>&#x20A6; {[{thisSiteProd.fields.price}]}</h3> </td>
+                        <td class="site-review"><img src = "/static/images/rating.png"/><p>Provide feedback</p></td>
+                        <td class="site-specs">
+                            <img src="{% static 'images/delivery-van.png' %}"/><small> Delivery : No data</small><br/>
+                            <img src="{% static 'images/colors-icon.png' %}"/><small>Colors : No data</small>
+                        </td>
+                        <td class="site-redirect"><button type="button"  class="btn btn-primary"><a href='{[{thisSiteProd.fields.prodUrl}]}' target="_blank">BUY FROM SITE</a></button></td>
+                    </tr>
+                </table>
+            </div>
+          </div>
+          <div class="tab-pane" id="specs">
+              <h2>Specifications Content Goes Here</h2>
+          </div>
+          <div class="tab-pane" id="products">
+              <h2>Similar products Content Goes Here</h2>
+          </div>
+          <div class="tab-pane" id="reviews">
+              <h2>Reviews Content Goes Here</h2>
+          </div>
+          <div class="tab-pane" id="history">
+              <h2>History Content Goes Here</h2>
+          </div>
+        </div>
+
+    </div>
+
+
+
+</div>
 
 {% endblock content %}

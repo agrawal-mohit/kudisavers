@@ -12,6 +12,7 @@ import urllib3
 from django.core.files.base import ContentFile
 
 class Product(models.Model):
+    site = models.CharField(max_length=20)
     section = models.CharField(max_length=50)
     category = models.CharField(max_length=50)
     prodType = models.CharField(max_length=50)
