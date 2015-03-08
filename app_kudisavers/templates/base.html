@@ -46,7 +46,7 @@
 
     });
 
-    kudisavers.filter('urlDecoded', function () {
+    kudisavers.filter('urlDecoded', function ($rootScope) {
           return function(val) {
             return decodeURIComponent(val);
           }
