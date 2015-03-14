@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load staticfiles %}
+
+<link rel="stylesheet" href="{% static 'css/section.css' %}">
+
+        <script>
+            kudisavers.controller('section-cameras', function($scope){
+
+                $scope.popular_price_list_groups = {'Digital Cameras': [{'name': 'Canon Camera Price List', 'img': 'http://homeimg2.mspcdn.net/canon_30.png'}, {'name': 'Sony Camera Price List', 'img': 'http://homeimg2.mspcdn.net/sony_30.png'}, {'name': 'Kodak Camera Price List', 'img': 'http://homeimg2.mspcdn.net/kodak_30.png'}, {'name': 'Digital Camera Price List', 'img': 'http://homeimg2.mspcdn.net/digitalcamera_100.jpeg'}], 'DSLR Cameras': [{'name': 'Nikon DSLR Price List', 'img': 'http://homeimg2.mspcdn.net/nikon_30.png'}, {'name': 'Sony DSLR Price List', 'img': 'http://homeimg2.mspcdn.net/sony_30.png'}, {'name': 'DSLR Camera Price List', 'img': 'http://homeimg2.mspcdn.net/dslr_30.jpeg'}]};
+
+                $scope.section_groups = {
+                'Cameras, DSLRs & More': [
+                                            {'item': 'Digital Cameras', 'img': 'http://homeimg1.mspcdn.net/digitalcamera_100.jpeg'},
+                                            {'item': 'Digital SLR Cameras', 'img': 'http://homeimg1.mspcdn.net/dslr_100.jpeg'},
+                                            {'item': 'Camcorders', 'img': 'http://homeimg1.mspcdn.net/camcorder_100.jpeg'},
+                                            {'item': 'Digital Photo Frames', 'img': 'http://homeimg1.mspcdn.net/photoframe_100.jpeg'},
+                                            {'item': 'Binoculars', 'img': 'http://homeimg1.mspcdn.net/binocular_100.jpeg'}
+                                           ],
+                'Lenses & Lens Accessories': [
+                                                {'item': 'Camera Lenses', 'img': 'http://homeimg1.mspcdn.net/lenses_100.jpeg'},
+                                                {'item': 'Lens Filters', 'img': 'http://homeimg1.mspcdn.net/lensfilter_100.jpeg'},
+                                                {'item': 'Lens Hoods', 'img': 'http://homeimg1.mspcdn.net/lenshoods_100.jpeg'},
+                                                {'item': 'Lens Caps', 'img': 'http://homeimg1.mspcdn.net/lenscap_100.jpeg'},
+                                                {'item': 'Lens Cleaners', 'img': 'http://homeimg1.mspcdn.net/lenscleaner_100.jpeg'}
+                                            ],
+                'Tripods': [
+                                                {'item': 'Tripods', 'img': 'http://homeimg1.mspcdn.net/tripod_100.jpeg'},
+                                                {'item': 'Monopods', 'img': 'http://homeimg1.mspcdn.net/monopod_100.jpeg'},
+                                                {'item': 'Tripod Ball Heads', 'img': 'http://homeimg1.mspcdn.net/tripodballhead_100.jpeg'}
+                                            ],
+                'Camera Accessories': [
+                                                {'item': 'SD Memory Cards', 'img': 'http://homeimg1.mspcdn.net/sdmemorycard_100.jpeg'},
+                                                {'item': 'Camera Bags', 'img': 'http://homeimg1.mspcdn.net/camera-bags.jpg'},
+                                                {'item': 'Camera Flashes', 'img': 'http://homeimg1.mspcdn.net/flash_100.jpeg'},
+                                                {'item': 'Camera Remote Controls', 'img': 'http://homeimg1.mspcdn.net/cameraremote_100.jpeg'},
+                                                {'item': 'Rechargeable Batteries', 'img': 'http://homeimg1.mspcdn.net/rechargebattery_100.jpeg'},
+                                                {'item': 'Battery Chargers', 'img': 'http://homeimg1.mspcdn.net/batterycharger_100.jpeg'}
+                                            ]
+                };
+
+            })
+
+        </script>
+
+<div class="section-container" ng-controller="section-cameras">
+
+<div class="section-left col-md-3">
+    <div class="popular-price-list-panel">
+        <div class="list-group" ng-repeat="(groupName,listGroup) in popular_price_list_groups">
+            <a href="#" class="list-group-item disabled">{[{ groupName }]}</a>
+            <a href="#" class="list-group-item" ng-repeat="pplist in listGroup">
+                <img src="{[{pplist.img}]}" alt="{[{pplist.name}]}">
+                {[{ pplist.name }]}
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="section-right col-md-9">
+    <div class="section-items-panel">
+        <div class="section-group" ng-repeat="(sgName,sg) in section_groups"> <!-- msp_index div open -->
+				<div class="section-group-heading">
+					<h3>{[{sgName}]}</h3>
+				</div>
+				<div class="section-items">
+					<div class="sectionitem" ng-repeat="si in sg">
+						<a href="/cameras/{[{sgName.split(' ').join('-')}]}/{[{si.item.split(' ').join('-')}]}" ><img src="{[{si.img}]}" alt="{[{si.item}]} Price "></a><br>
+						<a href="/cameras/{[{sgName.split(' ').join('-')}]}/{[{si.item.split(' ').join('-')}]}" >
+							<p>{[{si.item}]}</p>
+                        </a>
+					</div>
+				</div>
+	    </div>
+    </div> <!--section-items-panel-->
+
+</div>><!--section-right-->
+
+</div><!--section-container-->
+
+{% endblock content %}
