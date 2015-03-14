@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block menubar %}
+
+{% load staticfiles %}
+
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+
+        <script>
+               $(function(){
+
+                var thisPageLi = "#"+location.href.split('/')[3]
+             $(thisPageLi).addClass('active');
+
+               })
+
+        </script>
+
+<div>
+
+</div>
+
+{% endblock menubar %}
