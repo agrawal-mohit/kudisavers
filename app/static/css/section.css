@@ -38,21 +38,26 @@ position : absolute;
 }
 
 
-.sectionitem{
+.section-item{
 	display: inline-block;
-	width : 20%;
+	
 	text-align: center;
 
 	
 }
 
-.sectionitem a p{
+.section-item a p{
 color: #333333;
 	font-weight: bold;
 }
 
-.sectionitem a:hover {
+.section-item a:hover {
 	 text-decoration: none;
 }
 
+.mobiles-brands-logo{
+	max-height: 200px;
+	 width:auto;/*maintain aspect ratio*/
+	 max-width : 200px;
+}
 

@@ -3,6 +3,8 @@ from . import views
 
 
 urlpatterns = patterns('',
+    url(r'^search/$', views.search),
+    url(r'^form/$', views.form),
     url(r'^$', views.home),
     url(r'^section/$', views.section),
     url(r'^mobiles/$', views.mobiles),

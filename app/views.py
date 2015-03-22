@@ -11,13 +11,49 @@ from operator import itemgetter
 from django.db.models import Avg, Max, Min
 from django.forms.models import model_to_dict
 from django.core import serializers
+from django.template import RequestContext
+from xml.sax.saxutils import escape, unescape
 
 import re, json
 register = Library()
+from django import forms
+
+
+html_escape_table = {
+        "&": "&amp;",
+        '"': "&quot;",
+        "'": "&apos;",
+        ">": "&gt;",
+        "<": "&lt;",
+        }
+
+class NameForm(forms.Form):
+    your_name = forms.CharField(label='Your name', max_length=100)
+
+
+class SearchForm(forms.Form):
+    section = forms.CharField(label='Section', max_length=100)
+    product = forms.CharField(label='Product', max_length=100)
+
 
 
 
 # Create your views here.
+
+def form(request):
+    form = NameForm()
+    return render(request, 'name-form.html', {'form': form})
+
+def search(request):
+    form = SearchForm(request.POST)
+    if form.is_valid():
+        formData = form.cleaned_data
+        section = formData['section']
+        product = formData['product']
+        search =  {"section":section,"product":product}
+        products = mark_safe(serialize('json', Product.objects.filter(section__icontains= section).filter(prodName__icontains= product)))
+
+    return render(request, 'products-list.html', {'products' : products , 'search': search})
 
 def home(request):
     return render(request, 'home.html', {}) #Looks for html files inside app_kudisavers/templates
@@ -33,8 +69,9 @@ def mobiles(request):
     #tablets = Product.objects.filter(prodTypeName__icontains='tablet').exclude(prodTypeName__icontains='accessories')
     #mobileAccessories = Product.objects.filter(prodTypeName__icontains='mobile').filter(prodTypeName__icontains='accessories').exclude(prodName__icontains='headphone').exclude(prodName__icontains='headset')
     #headphonesHeadsets = Product.objects.filter(prodTypeName__icontains='mobile').filter( Q(prodName__icontains='headphone') | Q(prodName__icontains='headset'))
-
-    return render(request, 'mobiles.html')
+    brandsList = Product.objects.filter(section__icontains='Mobiles').filter(category__icontains='Brands').values_list('brand')
+    brands = [escape(brand) for brand in brandsList]
+    return render(request, 'mobiles.html', {'brands' : brands})
 
 
 def computers(request):

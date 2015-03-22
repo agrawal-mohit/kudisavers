@@ -1,7 +1,6 @@
 {% load staticfiles %}
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html" >
+<html ng-app="kudisavers">
 <head lang="en">
     <meta charset="UTF-8">
 
@@ -9,8 +8,10 @@
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
     <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src = "{% static 'lib/angular/angular.js' %}"></script>
+    <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.js"></script>
 
     <script src = "{% static 'js/app.js' %}"></script>
+
 
     <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap-theme.min.css' %}">
@@ -24,21 +25,24 @@
 
 <script>
 
-    kudisavers.controller('navCtrl', function($rootScope, $scope){
+    kudisavers.controller('baseCtrl', function($rootScope, $scope){
 
-            routes = location.href.split('/');
+            routes = decodeURIComponent(location.href).split('/');
             thisPageLi = "#"+routes[3];
             $(thisPageLi).addClass('active');
-            $rootScope.routes = routes.slice(3, routes.length+2);
+            console.log(routes);
+            $scope.routes = routes.slice(3, routes.length);
+            $rootScope.routes= $scope.routes;
+
 
 
     });
 
 </script>
 
-<body ng-app="kudisavers">
+<body ng-controller="baseCtrl">
 
-        <nav id="top-bar" ng-controller="navCtrl" class="navbar navbar-default" role="navigation">
+        <nav id="top-bar"  class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -57,9 +61,11 @@
                             <a href="#" style="color:white;"  role="button" aria-expanded="false"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Categories <span class="caret"></span></a>
                         </li>
                     </ul>
-                    <form style="margin-top: 0.5%;" class="form-inline col-xs-8" role="form">
+                    <form action="/search/" method="POST" style="margin-top: 0.5%;" class="form-inline col-xs-8" role="form">
+                         {% csrf_token %}
+
                         <div class="form-group">
-                            <select class="form-control col-xs-3" name="category">
+                            <select class="form-control col-xs-3" ng-model="section" name="section">
                                 <optgroup label="Electronics">
                                     <option value="" data-category="electronics" selected="">All Electronics</option>
                                     <option value="mobile" data-category="electronics">Mobiles, Tablets &amp; Accessories</option>
@@ -82,7 +88,7 @@
                                 </optgroup>
                             </select>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="product">
+                                <input type="text" class="form-control" ng-model="product" name="product">
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                           </span>
@@ -112,6 +118,10 @@
                 <li id="homedecor" class="sub-head-menu-item"><a href="/homedecor/">Home Decor</a></li>
             </ul>
         </div>
+
+        <ul class="breadcrumb">
+            <li ng-repeat="route in routes"><a href="#" >{[{(route)}]}</a></li>
+        </ul>
 
         <div class="main-container">
             {% block content %}

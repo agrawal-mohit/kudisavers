@@ -161,7 +161,8 @@
                     }
                 }))[0]
 
-                console.log($scope.bestProduct)
+                console.log($scope.bestProduct);
+                $scope.storeRating = 10;
 
 
             })
@@ -258,7 +259,10 @@
                     <tr class="site-price-bar" ng-repeat="thisSiteProd in eachSiteProds | orderBy : 'fields.price'">
                         <td class="site-logo"><img src="/static/images/{[{thisSiteProd.fields.site}]}.png"/></td>
                         <td style="text-align:center;" class="site-price"><h3>&#x20A6; {[{thisSiteProd.fields.price}]}</h3> </td>
-                        <td class="site-review"><img src = "/static/images/rating.png"/><p>Provide feedback</p></td>
+                        <td class="site-review">
+                            <rating value="storeRating" max="10" readonly="isReadonly"></rating>
+                            <p>Provide feedback</p>
+                        </td>
                         <td class="site-specs">
                             <img src="{% static 'images/delivery-van.png' %}"/><small> Delivery : No data</small><br/>
                             <img src="{% static 'images/colors-icon.png' %}"/><small>Colors : No data</small>

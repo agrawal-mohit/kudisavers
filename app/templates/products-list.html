@@ -33,6 +33,9 @@
 
             kudisavers.controller('productsListCtrl', function($rootScope, $scope){
 
+                //$scope.search = JSON.parse("{{search|safe}}");
+                //console.log( $scope.search);
+
                 $scope.routes = $rootScope.routes;
                 $scope.productsData = ({{products}});
                 $scope.products = [];
@@ -142,13 +145,13 @@
                 </ul>
             </div>
         </div>
-        <div class="options-bar">
-        <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage"
-              ng-change="pageChanged()" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;"
-              first-text="&laquo;" last-text="&raquo;">
-        </pagination>
 
-    </div>
+        <div class="options-bar">
+            <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage"
+                  ng-change="pageChanged()" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;"
+                  first-text="&laquo;" last-text="&raquo;">
+            </pagination>
+        </div>
 
     </div>
 

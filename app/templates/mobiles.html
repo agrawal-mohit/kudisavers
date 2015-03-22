@@ -6,8 +6,39 @@
 
 <link rel="stylesheet" href="{% static 'css/section.css' %}">
 
+        <style>
+
+
+            .mobiles-brands-logo{
+                 max-height: 200px;
+                 width:auto;/*maintain aspect ratio*/
+                 max-width : 200px;
+            }
+
+             .section-item {
+                display:inline-block;
+                padding-right : 3%;
+                padding-top : 5%;
+            }
+
+            .section-item-name{
+                color : black;
+            }
+
+            .section-item-name:hover{
+                text-decoration : none;
+            }
+
+        </style>
         <script>
+
+             brands = ({{brands}});
+              console.log('fgwegr');
+              console.log(brands);
+
             kudisavers.controller('section-mobile', function($scope){
+
+
 
                 $scope.popular_price_list_groups = {'Popular Price Lists': [
                                                     {'name': '8GB Memory Card ', 'img': 'http://c271790.r90.cf1.rackcdn.com/33456-thumb.jpg'},
@@ -111,12 +142,12 @@
 				<div class="category-heading">
 					<h3>{[{catName}]}</h3>
 				</div>
-				<div class="items">
-					<div class="item" ng-repeat="(prodType,ptUrl) in cat">
-						<a href="/mobiles/{[{catName.split(' ').join('-')}]}/{[{prodType.split(' ').join('-')}]}" >
-                            <img src="{[{ptUrl}]}" alt="{[{prodType}]} Price "></a><br>
-						<a href="/mobiles/{[{catName.split(' ').join('-')}]}/{[{prodType.split(' ').join('-')}]}" >
-							<p>{[{prodType}]}</p></a>
+				<div class="section-items" >
+					<div class="section-item" ng-repeat="(prodType,ptUrl) in cat">
+						<a class="section-item-img" href="/mobiles/{[{catName.split(' ').join('-')}]}/{[{prodType.split(' ').join('-')}]}" >
+                            <img class= "mobiles-brands-logo" src="/static/images/mobiles-brands/{[{prodType.split(' ').join('-')}]}.jpg" alt="{[{prodType}]} Price "></a><br>
+						<a class="section-item-name" href="/mobiles/{[{catName.split(' ').join('-')}]}/{[{prodType.split(' ').join('-')}]}" >
+							<b>{[{prodType}]}</b></a>
 					</div>
 				</div>
 	    </div>
