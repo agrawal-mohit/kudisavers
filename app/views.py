@@ -14,9 +14,15 @@ from django.core import serializers
 from django.template import RequestContext
 from xml.sax.saxutils import escape, unescape
 
+from django.http import HttpResponse
+from authomatic import Authomatic
+from authomatic.adapters import DjangoAdapter
+#from kudisavers.config import CONFIG
+
 import re, json
 register = Library()
 from django import forms
+#authomatic = Authomatic(CONFIG, 'a super secret random string')
 
 
 html_escape_table = {
@@ -43,6 +49,10 @@ class SearchForm(forms.Form):
 def form(request):
     form = NameForm()
     return render(request, 'name-form.html', {'form': form})
+
+
+def login(request):
+    return render()
 
 def search(request):
     form = SearchForm(request.POST)

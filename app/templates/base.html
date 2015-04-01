@@ -1,6 +1,7 @@
 {% load staticfiles %}
 
-<html ng-app="kudisavers">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" >
 <head lang="en">
     <meta charset="UTF-8">
 
@@ -8,41 +9,75 @@
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
     <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src = "{% static 'lib/angular/angular.js' %}"></script>
-    <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.js"></script>
+    <script src = "{% static 'lib/bootstrap/js/ui-bootstrap.js' %}"></script>
+
 
     <script src = "{% static 'js/app.js' %}"></script>
-
 
     <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap-theme.min.css' %}">
 
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/menu.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
 
     <title>Kudisavers</title>
 </head>
 
+<style>
+    .login_modal_footer{margin-top:5px;}
+    .login_modal_header .modal-title {text-align: center;font-family:'Philosopher',sans-serif; }
+    .form-group{position: relative;}
+    .form-group .login-field-icon {
+        font-size: 20px;
+        position: absolute;
+        right: 15px;
+        top: 3px;
+        transition: all 0.25s ease 0s;
+        padding-top: 2%;
+    }
+    .login-modal{
+        width:100%;
+        padding-bottom:20px;
+    }
+    .login_modal_header, .login_modal_footer {background: #c00 !important;color:#fff;}
+    .modal-register-btn{margin: 4% 33% 2% 33% ;width:100%;}
+    .login-modal input{height:40px; box-shadow: none; border:1px solid #ddd;}
+    .modal-body-left{float:left; width:50%; padding-right:4%; border-right:4px solid #ddd;}
+    .modal-body-right{float:right; width:47%;}
+    .login-link{padding:0 20%;}
+    .modal-social-icons{padding:0 10%;}
+    .facebook, .twitter, .google, .linkedin {width:100%;height:40px; padding-top:2%; margin-top:2%;}
+    .modal-icons{margin-left: -10px; margin-right: 20px;}
+    .google, .google:hover{background-color:#dd4b39 !important;border:2px solid #dd4b39;color:#fff;}
+    .twitter, .twitter:hover{ background-color: #00aced !important; border:2px solid #00aced;color: #fff;}
+    .facebook, .facebook:hover{background-color: #3b5999 !important; border:2px solid #3b5999;color:#fff;}
+    .linkedin, .linkedin:hover{background-color: #007bb6 !important; border: 2px solid #007bb6; color:#fff;}
+    #social-icons-conatainer{position: relative;}
+    #center-line{position: absolute;  right: 265.7px;top: 80px;background:#ddd;  border: 4px solid #DDDDDD;border-radius: 20px;}
+    .modal-login-btn{width:100%;height:40px; margin-bottom:10px;}
+    #modal-launcher{margin: 30% 0 0 30%; }
+    h1{border-bottom:5px solid #00BB64;}
+
+</style>
 <script>
 
-    kudisavers.controller('baseCtrl', function($rootScope, $scope){
+    kudisavers.controller('navCtrl', function($rootScope, $scope){
 
-            routes = decodeURIComponent(location.href).split('/');
+            routes = location.href.split('/');
             thisPageLi = "#"+routes[3];
             $(thisPageLi).addClass('active');
-            console.log(routes);
-            $scope.routes = routes.slice(3, routes.length);
-            $rootScope.routes= $scope.routes;
-
+            $rootScope.routes = routes.slice(3, routes.length+2);
 
 
     });
 
 </script>
 
-<body ng-controller="baseCtrl">
+<body ng-app="kudisavers">
 
-        <nav id="top-bar"  class="navbar navbar-default" role="navigation">
+        <nav id="top-bar" ng-controller="navCtrl" class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -61,11 +96,9 @@
                             <a href="#" style="color:white;"  role="button" aria-expanded="false"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Categories <span class="caret"></span></a>
                         </li>
                     </ul>
-                    <form action="/search/" method="POST" style="margin-top: 0.5%;" class="form-inline col-xs-8" role="form">
-                         {% csrf_token %}
-
+                    <form style="margin-top: 0.5%;" class="form-inline col-xs-8" role="form">
                         <div class="form-group">
-                            <select class="form-control col-xs-3" ng-model="section" name="section">
+                            <select class="form-control col-xs-3" name="category">
                                 <optgroup label="Electronics">
                                     <option value="" data-category="electronics" selected="">All Electronics</option>
                                     <option value="mobile" data-category="electronics">Mobiles, Tablets &amp; Accessories</option>
@@ -88,7 +121,7 @@
                                 </optgroup>
                             </select>
                             <div class="input-group">
-                                <input type="text" class="form-control" ng-model="product" name="product">
+                                <input type="text" class="form-control" name="product">
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                           </span>
@@ -97,7 +130,7 @@
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">SIGN UP</a></li>
-                        <li><a href="#">LOGIN</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#login-modal">LOGIN</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -119,14 +152,61 @@
             </ul>
         </div>
 
-        <ul class="breadcrumb">
-            <li ng-repeat="route in routes"><a href="#" >{[{(route)}]}</a></li>
-        </ul>
-
         <div class="main-container">
             {% block content %}
             {% endblock %}
         </div>
+
+
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header login_modal_header">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        		<h2 class="modal-title" id="myModalLabel">Login to Your Account</h2>
+      		</div>
+      		<div class="modal-body login-modal">
+      			<p><b>Kudisavers is a price comparison tool which gives the best price for any product</b></p>
+                <br/>
+      			<div class="clearfix"></div>
+      			<div id='social-icons-conatainer'>
+	        		<div class='modal-body-left'>
+	        			<div class="form-group">
+		              		<input type="text" id="username" placeholder="Enter your name" value="" class="form-control login-field">
+		              		<i class="fa fa-user login-field-icon"></i>
+		            	</div>
+
+		            	<div class="form-group">
+		            	  	<input type="password" id="login-pass" placeholder="Password" value="" class="form-control login-field">
+		              		<i class="fa fa-lock login-field-icon"></i>
+		            	</div>
+
+		            	<a href="#" class="btn btn-danger modal-login-btn">Login</a>
+		            	<a href="#" class="login-link text-center">Lost your password?</a>
+	        		</div>
+
+	        		<div class='modal-body-right'>
+	        			<div class="modal-social-icons">
+	        				<a href='#' class="btn facebook"> <i class="fa fa-facebook modal-icons"></i> Sign In with Facebook </a>
+	        				<a href='#' class="btn twitter"> <i class="fa fa-twitter modal-icons"></i> Sign In with Twitter </a>
+	        				<a href='#' class="btn google"> <i class="fa fa-google-plus modal-icons"></i> Sign In with Google </a>
+	        				<a href='#' class="btn linkedin"> <i class="fa fa-linkedin modal-icons"></i> Sign In with Linkedin </a>
+	        			</div>
+	        		</div>
+	        		<div id='center-line'> OR </div>
+	        	</div>
+        		<div class="clearfix"></div>
+
+        		<div class="form-group modal-register-btn">
+        			<button class="btn btn-default"> New User Please Register</button>
+        		</div>
+      		</div>
+      		<div class="clearfix"></div>
+      		<div class="modal-footer login_modal_footer">
+      		</div>
+    	</div>
+  	</div>
+</div>
 
     <!-- Footer -->
     <!--<footer>-->
